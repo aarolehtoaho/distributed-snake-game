@@ -17,12 +17,11 @@ static void joystick_task(void *arg) {
     joystick_data data;
 
     for(;;) {
-        // Check state
-            data.buttonPressed = button_pressed();
-            data.x = read_joystick_x();
-            data.y = read_joystick_y();
-            write_joystick_data(&data);
-            // change state
+        data.buttonPressed = button_pressed();
+        data.x = read_joystick_x();
+        data.y = read_joystick_y();
+        write_joystick_data(&data);
+
         vTaskDelay(pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS));
     }
 }

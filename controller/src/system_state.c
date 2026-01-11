@@ -15,3 +15,4 @@ void write_joystick_data(joystick_data *data) {
 }
 
 State getState() { return xEventGroupGetBits(system_events); }
+void setState(State state) { xEventGroupSetBits(system_events, state); }
