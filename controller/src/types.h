@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-typedef enum { READ, SEND } State ;
+typedef enum { WIFI_CONNECTED } State ;
 typedef struct {
     float x;
     float y;

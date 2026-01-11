@@ -53,9 +53,11 @@ add_executable(${MAIN_TARGET}
     src/config.h
     src/joystick.c
     src/comm.c
+    src/wifi.c
     src/system_state.c
     src/tasks/joystick_task.c
     src/tasks/comm_task.c
+    src/tasks/system_task.c
 )
 
 target_include_directories(${MAIN_TARGET} PRIVATE
@@ -74,7 +76,7 @@ target_link_libraries(${MAIN_TARGET}
 
 # Include libraries necessaries to control the WiFi.
 if (PICO_CYW43_SUPPORTED)
-    target_link_libraries(${MAIN_TARGET} pico_cyw43_arch_none)
+    target_link_libraries(${MAIN_TARGET} pico_cyw43_arch_lwip_sys_freertos)
 endif()
 
 #Support for stdio (printf, fwrite, puts...) via usb or UART. 
