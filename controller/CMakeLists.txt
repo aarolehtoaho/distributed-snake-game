@@ -43,6 +43,7 @@ add_executable(${MAIN_TARGET}
     src/joystick.c
     src/system_state.c
     src/tasks/joystick_task.c
+    src/tasks/comm_task.c
 )
 
 target_include_directories(${MAIN_TARGET} PRIVATE

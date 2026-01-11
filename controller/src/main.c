@@ -7,13 +7,21 @@
 #include <task.h>
 
 #include "joystick_task.h"
+#include "comm_task.h"
+#include "system_state.h"
 
 int main() {
     stdio_init_all();
+    init_system_state();
     sleep_ms(300);
 
     if(!create_joystick_task()) {
         printf("Joystick Task creation failed\n");
+        return 0;
+    }
+
+    if (!create_comm_task()) {
+        printf("Communication Task creation failed\n");
         return 0;
     }
 
