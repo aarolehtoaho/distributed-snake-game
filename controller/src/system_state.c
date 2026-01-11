@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdint.h>
 #include "system_state.h"
 
@@ -6,7 +7,17 @@ EventGroupHandle_t system_events = NULL;
 
 void init_system_state() {
     joystick_queue = xQueueCreate(1, sizeof(joystick_data));
+    if (joystick_queue == NULL) {
+        printf("ERROR: Failed to create joystick queue\n");
+        return;
+    }
+    
     system_events = xEventGroupCreate();
+    if (system_events == NULL) {
+        printf("ERROR: Failed to create event group\n");
+        return;
+    }
+    
     xEventGroupSetBits(system_events, READ);
 }
 

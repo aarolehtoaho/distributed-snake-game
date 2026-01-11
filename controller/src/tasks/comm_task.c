@@ -1,4 +1,4 @@
-#include <stdio.h> // for test
+#include <stdio.h>
 
 #include "comm_task.h"
 #include "types.h"
@@ -14,7 +14,7 @@ static void comm_task(void *arg) {
         set_state(SEND);
 
         get_joystick_data(&data);
-        printf("(%f, %f), %d", data.x, data.y, data.buttonPressed);
+        printf("(%f, %f), button: %d\n", data.x, data.y, data.buttonPressed);
 
         vTaskDelay(pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS + 500));
     }

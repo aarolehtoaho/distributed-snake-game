@@ -7,7 +7,7 @@
 
 #include "types.h"
 
-extern QueueHandle_t joystick_data_queue;
+extern QueueHandle_t joystick_queue;
 extern EventGroupHandle_t system_events;
 
 void init_system_state();
