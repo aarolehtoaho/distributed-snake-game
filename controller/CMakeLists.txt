@@ -41,6 +41,7 @@ add_executable(${MAIN_TARGET}
     src/main.c
     src/config.h
     src/joystick.c
+    src/system_state.c
     src/tasks/joystick_task.c
 )
 

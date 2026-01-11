@@ -1,25 +1,29 @@
 #include <stdio.h>
 
 #include <FreeRTOS.h>
+#include <queue.h>
 #include <task.h>
 
+#include "types.h"
 #include "config.h"
 #include "joystick_task.h"
 #include "joystick.h"
+#include "system_state.h"
 
 static void joystick_task(void *arg) {
     (void)arg;
 
     init_joystick();
+    joystick_data data;
 
-    for(;;){
-        if (button_pressed()) {
-            printf("Button is pressed\n");
-        }
-        printf("Joystick X: %f\n", read_joystick_x());
-        printf("Joystick Y: %f\n", read_joystick_y());
-        fflush(stdout);
-        vTaskDelay(pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS + 300));
+    for(;;) {
+        // Check state
+            data.buttonPressed = button_pressed();
+            data.x = read_joystick_x();
+            data.y = read_joystick_y();
+            write_joystick_data(&data);
+            // change state
+        vTaskDelay(pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS));
     }
 }
 
