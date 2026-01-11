@@ -17,8 +17,6 @@ void init_system_state() {
         printf("ERROR: Failed to create event group\n");
         return;
     }
-    
-    xEventGroupSetBits(system_events, READ);
 }
 
 void write_joystick_data(joystick_data *data) {
@@ -31,3 +29,4 @@ BaseType_t get_joystick_data(joystick_data *data) {
 
 State get_state() { return xEventGroupGetBits(system_events); }
 void set_state(State state) { xEventGroupSetBits(system_events, state); }
+void unset_state(State state) { xEventGroupClearBits(system_events, state); }

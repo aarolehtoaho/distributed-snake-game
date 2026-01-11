@@ -8,6 +8,7 @@
 
 #include "joystick_task.h"
 #include "comm_task.h"
+#include "system_task.h"
 #include "system_state.h"
 
 int main() {
@@ -23,6 +24,11 @@ int main() {
 
     if (!create_comm_task()) {
         printf("Communication Task creation failed\n");
+        return 0;
+    }
+
+    if (!create_system_task()) {
+        printf("System Task creation failed\n");
         return 0;
     }
 
