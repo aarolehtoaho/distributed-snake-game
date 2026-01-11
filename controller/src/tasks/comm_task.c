@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "comm_task.h"
+#include "comm.h"
 #include "types.h"
 #include "config.h"
 #include "system_state.h"
@@ -11,10 +12,9 @@ static void comm_task(void *arg) {
     joystick_data data;
 
     for(;;) {
-        set_state(SEND);
-
-        get_joystick_data(&data);
-        printf("(%f, %f), button: %d\n", data.x, data.y, data.buttonPressed);
+        if (get_joystick_data(&data) == pdTRUE) {
+            send_data(&data);
+        }
 
         vTaskDelay(pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS + 500));
     }

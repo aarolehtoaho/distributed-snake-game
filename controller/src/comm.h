@@ -5,5 +5,6 @@
 
 void send_data(joystick_data *data);
 char* create_json_string(joystick_data *data);
+char* create_http_post_string(const char* json_string);
 
 #endif
