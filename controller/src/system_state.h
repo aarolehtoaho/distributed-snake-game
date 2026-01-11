@@ -14,6 +14,7 @@ void init_system_state();
 void write_joystick_data(joystick_data *data);
 BaseType_t get_joystick_data(joystick_data *data);
 State get_state();
+void unset_state(State state);
 void set_state(State state);
 
 #endif
