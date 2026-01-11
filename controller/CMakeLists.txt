@@ -7,7 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(APP_NAME controller) 
 set(MAIN_TARGET controller_app)
 
-# for the Raspberry Pi Pico VS Code Extension to work
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
 if(WIN32)
     set(USERHOME $ENV{USERPROFILE})
 else()
@@ -15,11 +15,13 @@ else()
 endif()
 set(sdkVersion 2.2.0)
 set(toolchainVersion 14_2_Rel1)
-set(picotoolVersion 2.2.0)
+set(picotoolVersion 2.2.0-a4)
 set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
 if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
+# ====================================================================================
+set(PICO_BOARD pico CACHE STRING "Board type")
 
 # Pull in SDK (must be before project)
 include(pico_sdk_import.cmake)
@@ -37,12 +39,21 @@ ${CMAKE_CURRENT_LIST_DIR}/config)
 
 add_executable(${MAIN_TARGET}
     src/main.c
+    src/config.h
+    src/joystick.c
+    src/tasks/joystick_task.c
+)
+
+target_include_directories(${MAIN_TARGET} PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/src
+    ${CMAKE_CURRENT_LIST_DIR}/src/tasks
 )
 
 target_link_libraries(${MAIN_TARGET}
-        pico_stdlib
-        FreeRTOS-Kernel
-        FreeRTOS-Kernel-Heap4
+    pico_stdlib
+    hardware_adc
+    FreeRTOS-Kernel
+    FreeRTOS-Kernel-Heap4
 )
 
 # Include libraries necessaries to control the WiFi.
