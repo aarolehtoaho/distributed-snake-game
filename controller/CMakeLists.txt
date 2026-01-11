@@ -37,10 +37,22 @@ include(FreeRTOS_Kernel_import.cmake)
 target_include_directories(FreeRTOS-Kernel INTERFACE
 ${CMAKE_CURRENT_LIST_DIR}/config)
 
+# Fetch cJSON library
+include(FetchContent)
+FetchContent_Declare(
+  cjson
+  GIT_REPOSITORY https://github.com/DaveGamble/cJSON.git
+  GIT_TAG v1.7.17
+)
+set(ENABLE_CJSON_TEST OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(cjson)
+
 add_executable(${MAIN_TARGET}
     src/main.c
     src/config.h
     src/joystick.c
+    src/comm.c
     src/system_state.c
     src/tasks/joystick_task.c
     src/tasks/comm_task.c
@@ -49,6 +61,7 @@ add_executable(${MAIN_TARGET}
 target_include_directories(${MAIN_TARGET} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/src
     ${CMAKE_CURRENT_LIST_DIR}/src/tasks
+    ${cjson_SOURCE_DIR}
 )
 
 target_link_libraries(${MAIN_TARGET}
@@ -56,6 +69,7 @@ target_link_libraries(${MAIN_TARGET}
     hardware_adc
     FreeRTOS-Kernel
     FreeRTOS-Kernel-Heap4
+    cjson
 )
 
 # Include libraries necessaries to control the WiFi.
