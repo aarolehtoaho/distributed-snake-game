@@ -18,6 +18,7 @@ static void joystick_task(void *arg) {
         }
         printf("Joystick X: %f\n", read_joystick_x());
         printf("Joystick Y: %f\n", read_joystick_y());
+        fflush(stdout);
         vTaskDelay(pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS + 300));
     }
 }

@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define DEFAULT_STACK_SIZE 2048 
+#define DEFAULT_STACK_SIZE 4096 
 
 #define JOYSTICK_X_PIN 27
 #define JOYSTICK_Y_PIN 26

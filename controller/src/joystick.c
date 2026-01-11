@@ -21,11 +21,11 @@ bool button_pressed() {
 float read_joystick_x() {
     adc_select_input(JOYSTICK_X_PIN - 26);
     uint16_t raw = adc_read();
-    return raw / 4095.0f;
+    return (float)raw / 4095.0f;
 }
 
 float read_joystick_y() {
     adc_select_input(JOYSTICK_Y_PIN - 26);
     uint16_t raw = adc_read();
-    return raw / 4095.0f;
+    return (float)raw / 4095.0f;
 }
