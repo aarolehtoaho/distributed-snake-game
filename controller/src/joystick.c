@@ -3,6 +3,8 @@
 
 #include "joystick.h"
 #include "config.h"
+#include "types.h"
+#include "system_state.h"
 
 void init_joystick() {
     adc_init();
@@ -12,6 +14,12 @@ void init_joystick() {
     gpio_init(JOYSTICK_BTN_PIN);
     gpio_set_dir(JOYSTICK_BTN_PIN, GPIO_IN);
     gpio_pull_up(JOYSTICK_BTN_PIN);
+
+    joystick_data initial_data;
+    initial_data.buttonPressed = button_pressed();
+    initial_data.x = read_joystick_x();
+    initial_data.y = read_joystick_y();
+    write_joystick_data(&initial_data);
 }
 
 bool button_pressed() {

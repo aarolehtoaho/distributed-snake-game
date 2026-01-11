@@ -17,6 +17,8 @@ static void joystick_task(void *arg) {
     joystick_data data;
 
     for(;;) {
+        set_state(READ);
+
         data.buttonPressed = button_pressed();
         data.x = read_joystick_x();
         data.y = read_joystick_y();
