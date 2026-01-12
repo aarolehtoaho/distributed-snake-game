@@ -19,7 +19,6 @@ int main() {
         sleep_ms(10);
     }
     
-    wifi_init();
     init_system_state();
 
     if(!create_joystick_task()) {

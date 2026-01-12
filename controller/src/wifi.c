@@ -4,13 +4,16 @@
 #include "system_state.h"
 #include "config.h"
 #include <pico/cyw43_arch.h>
-#include <lwip/sockets.h>
+#include <lwip/api.h>
 #include <cyw43_ll.h>
 
 bool wifi_init() {
+    printf("Print 1\n");
     if (cyw43_arch_init()) { // cyw43_arch_init() freezes
+        printf("init failed\n");
         return false;
     }
+    printf("Print 2\n");
     cyw43_arch_enable_sta_mode();
     return true;
 }
@@ -31,20 +34,20 @@ bool wifi_connect() {
 }
 
 void send_data_over_wifi(const char* data) {
-    int socket = socket(AF_INET, SOCK_STREAM, 0);
+    struct netconn *conn;
+    ip_addr_t server_ip;
 
-    struct sockaddr_in server_addr = {
-        .sin_family = AF_INET,
-        .sin_port = htons(SERVER_PORT),
-        .sin_addr.s_addr = inet_addr(SERVER_IP)
-    };
+    ipaddr_aton(SERVER_IP, &server_ip);
 
-    int result = connect(socket, (struct sockaddr*)&server_addr, sizeof(server_addr));
-    if (result == 0) {
-        send(socket, data, strlen(data), 0);
+    conn = netconn_new(NETCONN_TCP);
+    if (!conn) return;
+
+    if (netconn_connect(conn, &server_ip, SERVER_PORT) == ERR_OK) {
+        netconn_write(conn, data, strlen(data), NETCONN_COPY);
     }
 
-    closesocket(socket);
+    netconn_close(conn);
+    netconn_delete(conn);
 }
 
 bool is_wifi_connected() {
