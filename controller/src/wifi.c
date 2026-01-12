@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "wifi.h"
 #include "system_state.h"
 #include "config.h"
@@ -5,19 +7,25 @@
 #include <lwip/sockets.h>
 #include <cyw43_ll.h>
 
-bool connect_to_wifi() {
-    if (cyw43_arch_init()) {
-        unset_state(WIFI_CONNECTED);
+bool wifi_init() {
+    if (cyw43_arch_init()) { // cyw43_arch_init() freezes
         return false;
     }
-
     cyw43_arch_enable_sta_mode();
+    return true;
+}
 
+bool wifi_connect() {
+    printf("Connecting to WiFi...\n");
+    fflush(stdout);
     if (cyw43_arch_wifi_connect_timeout_ms(WIFI_SSID, WIFI_PASS, CYW43_AUTH_WPA2_AES_PSK, 10000)) {
+        printf("Failed to connect to WiFi\n");
+        fflush(stdout);
         unset_state(WIFI_CONNECTED);
         return false;
     }
-
+    printf("Connected to WiFi successfully\n");
+    fflush(stdout);
     set_state(WIFI_CONNECTED);
     return true;
 }

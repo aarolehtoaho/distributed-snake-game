@@ -3,7 +3,8 @@
 
 #include <stdbool.h>
 
-bool connect_to_wifi();
+bool wifi_init();
+bool wifi_connect();
 void send_data_over_wifi(const char* data);
 bool is_wifi_connected();
 

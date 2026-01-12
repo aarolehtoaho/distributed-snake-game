@@ -2,7 +2,6 @@
 #include <string.h>
 
 #include <pico/stdlib.h>
-
 #include <FreeRTOS.h>
 #include <task.h>
 
@@ -10,11 +9,17 @@
 #include "comm_task.h"
 #include "system_task.h"
 #include "system_state.h"
+#include "wifi.h"
 
 int main() {
     stdio_init_all();
-    sleep_ms(300);
+    sleep_ms(1000);
+
+    while (!stdio_usb_connected()){
+        sleep_ms(10);
+    }
     
+    wifi_init();
     init_system_state();
 
     if(!create_joystick_task()) {
