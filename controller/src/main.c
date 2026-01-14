@@ -4,6 +4,7 @@
 #include <pico/stdlib.h>
 #include <FreeRTOS.h>
 #include <task.h>
+#include <boards/pico.h>
 
 #include "joystick_task.h"
 #include "comm_task.h"
@@ -13,11 +14,9 @@
 
 int main() {
     stdio_init_all();
+    gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
     sleep_ms(1000);
-
-    while (!stdio_usb_connected()){
-        sleep_ms(10);
-    }
     
     init_system_state();
 

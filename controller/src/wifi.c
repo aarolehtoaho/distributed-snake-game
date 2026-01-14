@@ -48,9 +48,13 @@ void send_data_over_wifi(const char* data) {
 
     err_t err = netconn_connect(conn, &server_ip, SERVER_PORT); // Not connecting
     if (err == ERR_OK) {
+        // Turn led on to indicate data is being sent
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
         printf("Data sent to %s:%d\n", SERVER_IP, SERVER_PORT);
         netconn_write(conn, data, strlen(data), NETCONN_COPY);
     } else {
+        // Turn led off to indicate failure
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
         printf("ERROR: Failed to connect to server %s:%d, Error: %d\n", SERVER_IP, SERVER_PORT, err);
     }
 
