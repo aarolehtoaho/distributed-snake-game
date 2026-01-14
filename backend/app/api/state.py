@@ -1,9 +1,9 @@
 class State:
-    def __init__(self):
-        self.snake_position = [(5, 5), (6, 5), (7, 5)]
-        self.food_position = (10, 10)
-        self.score = 0
-        self.game_status = "active"
+    def __init__(self, snake_position: list, food_position: tuple, score: int, game_status: str):
+        self.snake_position = snake_position
+        self.food_position = food_position
+        self.score = score
+        self.game_status = game_status
 
     def to_dict(self):
         return {
