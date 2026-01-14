@@ -11,6 +11,7 @@ void send_data(joystick_data *data) {
     if (is_wifi_connected()) {
         char *json_string = create_json_string(data);
         char *http_post_string = create_http_post_string(json_string);
+        printf("Sending HTTP POST\n");
         send_data_over_wifi(http_post_string);
         free(http_post_string);
         free(json_string);
@@ -32,16 +33,33 @@ char* create_json_string(joystick_data *data) {
 }
 
 char* create_http_post_string(const char* json_string) {
-    char *http_string;
-    sprintf(http_string,
+    int json_len = strlen(json_string);
+    int buffer_size = 300 + json_len;
+    
+    char *http_string = (char *)malloc(buffer_size);
+    if (!http_string) {
+        printf("ERROR: Failed to allocate memory for HTTP string\n");
+        return NULL;
+    }
+    
+    int written = snprintf(http_string, buffer_size,
             "POST /data HTTP/1.1\r\n"
-            "Host: %s\r\n"
+            "Host: %s:%d\r\n"
             "Content-Type: application/json\r\n"
             "Content-Length: %d\r\n"
+            "Connection: close\r\n"
             "\r\n"
             "%s",
             SERVER_IP,
-            strlen(json_string),
+            SERVER_PORT,
+            json_len,
             json_string);
+    
+    if (written < 0 || written >= buffer_size) {
+        printf("ERROR: HTTP string formatting failed\n");
+        free(http_string);
+        return NULL;
+    }
+    
     return http_string;
 }

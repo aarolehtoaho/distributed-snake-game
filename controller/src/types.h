@@ -3,7 +3,9 @@
 
 #include <stdbool.h>
 
-typedef enum { WIFI_CONNECTED } State ;
+typedef int State;
+#define WIFI_CONNECTED 1
+
 typedef struct {
     float x;
     float y;
