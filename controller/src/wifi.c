@@ -5,6 +5,7 @@
 #include "config.h"
 #include <pico/cyw43_arch.h>
 #include <lwip/api.h>
+#include <lwip/netif.h>
 #include <cyw43_ll.h>
 
 bool wifi_init() {
@@ -27,6 +28,7 @@ bool wifi_connect() {
         return false;
     }
     printf("Connected to WiFi successfully\n");
+    printf("IP: %s\n", ip4addr_ntoa(netif_ip4_addr(netif_default)));
     fflush(stdout);
     set_state(WIFI_CONNECTED);
     return true;
@@ -42,17 +44,14 @@ void send_data_over_wifi(const char* data) {
     if (!conn) {
         printf("ERROR: Failed to create new netconn\n");
         return;
-    } else {
-        printf("Netconn created successfully\n");
     }
 
     err_t err = netconn_connect(conn, &server_ip, SERVER_PORT); // Not connecting
     if (err == ERR_OK) {
-        printf("Connected to server %s:%d\n", SERVER_IP, SERVER_PORT);
+        printf("Data sent to %s:%d\n", SERVER_IP, SERVER_PORT);
         netconn_write(conn, data, strlen(data), NETCONN_COPY);
     } else {
-        printf("ERROR: Failed to connect to server %s:%d\n", SERVER_IP, SERVER_PORT);
-        printf("Error code: %d\n", err);
+        printf("ERROR: Failed to connect to server %s:%d, Error: %d\n", SERVER_IP, SERVER_PORT, err);
     }
 
     netconn_close(conn);

@@ -11,7 +11,6 @@ void send_data(joystick_data *data) {
     if (is_wifi_connected()) {
         char *json_string = create_json_string(data);
         char *http_post_string = create_http_post_string(json_string);
-        printf("Sending HTTP POST\n");
         send_data_over_wifi(http_post_string);
         free(http_post_string);
         free(json_string);
