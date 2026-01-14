@@ -8,12 +8,11 @@
 #include <cyw43_ll.h>
 
 bool wifi_init() {
-    printf("Print 1\n");
     if (cyw43_arch_init()) { // cyw43_arch_init() freezes
         printf("init failed\n");
         return false;
     }
-    printf("Print 2\n");
+    printf("cyw43_arch_init succeeded\n");
     cyw43_arch_enable_sta_mode();
     return true;
 }

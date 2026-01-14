@@ -23,6 +23,6 @@ static void system_task(void *arg) {
 
 bool create_system_task() {
     TaskHandle_t systemTaskHandle = NULL;
-    BaseType_t result = xTaskCreate(system_task, "system", DEFAULT_STACK_SIZE * 4, NULL, 2, &systemTaskHandle);
+    BaseType_t result = xTaskCreate(system_task, "system", DEFAULT_STACK_SIZE * 4, NULL, 4, &systemTaskHandle);
     return result == pdPASS ? true : false;
 }
