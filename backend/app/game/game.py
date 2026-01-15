@@ -25,7 +25,16 @@ class Game:
         self.input.update(x, y, button, timestamp)
 
     def update(self):
-        if self.state.game_status != State.RUNNING:
+        status = self.state.game_status
+        if self.input.button_pressed():
+            if status == State.RUNNING:
+                self.state.change_game_status(State.PAUSED)
+            elif status == State.PAUSED:
+                self.state.change_game_status(State.RUNNING)
+            elif status == State.GAME_OVER:
+                self.__init__()
+                self.state.change_game_status(State.RUNNING)
+        if status != State.RUNNING:
             return
 
         new_direction = self.input.new_direction(self.snake.get_direction())

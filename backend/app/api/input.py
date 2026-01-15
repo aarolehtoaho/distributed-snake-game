@@ -38,3 +38,6 @@ class Input:
             return current_direction
 
         return direction
+
+    def button_pressed(self) -> bool:
+        return self.button
