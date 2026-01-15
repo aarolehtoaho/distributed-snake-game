@@ -17,6 +17,7 @@ class Game:
                            Snake.LEFT)
         self.board.place_snake(self.snake.position)
         self.board.place_food(self.state.food_position)
+        self.button_was_pressed = False
 
     def get_state(self):
         return self.state.to_dict()
@@ -26,7 +27,9 @@ class Game:
 
     def update(self):
         status = self.state.game_status
-        if self.input.button_pressed():
+        new_button_press = self.input.button_pressed() and not self.button_was_pressed
+        self.button_was_pressed = self.input.button_pressed()
+        if new_button_press:
             if status == State.RUNNING:
                 self.state.change_game_status(State.PAUSED)
             elif status == State.PAUSED:
@@ -48,17 +51,21 @@ class Game:
             case Board.EMPTY:
                 tail = self.snake.remove_tail()
                 self.board.clear_square(tail)
+                self.board.place_snake_head(new_head)
             case Board.FOOD:
                 self.state.increase_score()
                 new_food_position = self.board.find_empty_square()
                 if new_food_position:
                     self.state.change_food_position(new_food_position)
+                    self.board.place_food(new_food_position)
                 else:
                     self.state.change_game_status(State.GAME_OVER)
             case Board.SNAKE:
                 self.state.change_game_status(State.GAME_OVER)
                 return
+            case Board.OUT_OF_BOUNDS:
+                # Can be changed to move head to opposite side
+                self.state.change_game_status(State.GAME_OVER)
+                return
 
         self.state.change_snake_position(self.snake.position)
-        self.board.place_snake(self.snake.position)
-        self.board.place_food(self.state.food_position)

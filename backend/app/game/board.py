@@ -5,6 +5,7 @@ class Board:
     EMPTY = 0
     SNAKE = 1
     FOOD = 2
+    OUT_OF_BOUNDS = 3
 
     def __init__(self, width: int, height: int):
         self.width = width
@@ -15,6 +16,10 @@ class Board:
         for x, y in snake_positions:
             self.grid[y][x] = Board.SNAKE
 
+    def place_snake_head(self, head_position: tuple):
+        x, y = head_position
+        self.grid[y][x] = Board.SNAKE
+
     def place_food(self, food_position: tuple):
         x, y = food_position
         self.grid[y][x] = Board.FOOD
@@ -23,8 +28,10 @@ class Board:
         x, y = position
         self.grid[y][x] = Board.EMPTY
 
-    def get_square(self, position: tuple):
+    def get_square(self, position: tuple) -> int:
         x, y = position
+        if x < 0 or x >= self.width or y < 0 or y >= self.height:
+            return Board.OUT_OF_BOUNDS
         return self.grid[y][x]
 
     def find_empty_square(self) -> tuple | None:
