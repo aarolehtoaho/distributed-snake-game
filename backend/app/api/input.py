@@ -25,9 +25,9 @@ class Input:
         if -3.14 / 4 <= angle < 3.14 / 4:
             direction = "right"
         elif 3.14 / 4 <= angle < 3 * 3.14 / 4:
-            direction = "up"
-        elif -3 * 3.14 / 4 <= angle < -3.14 / 4:
             direction = "down"
+        elif -3 * 3.14 / 4 <= angle < -3.14 / 4:
+            direction = "up"
         else:
             direction = "left"
 
