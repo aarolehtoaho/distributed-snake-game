@@ -16,7 +16,7 @@ static void comm_task(void *arg) {
             send_data(&data);
         }
 
-        vTaskDelay(pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS + 500));
+        vTaskDelay(pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS));
     }
 }
 
