@@ -36,7 +36,11 @@ class Client:
         score: int = self.state.get('score')
         game_status: str = self.state.get('game_status')
 
-        if not all([food_position, snake_position, score, game_status]):
+        all_not_null = food_position is not None and \
+                       snake_position is not None and \
+                       score is not None and \
+                       game_status is not None
+        if not all_not_null:
             self.renderer.draw_text_panel('Invalid game state received')
             self.renderer.update_display()
             return
